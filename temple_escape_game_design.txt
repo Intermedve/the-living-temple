@@ -1,0 +1,108 @@
+A templombol valo kiszabadulas - 2 fos kooperativ browser jatek (TERV / MVP)
+
+Gyors tisztazo kerdesek (hogy 1 nap alatt realis legyen a scope)
+1) Nezet: felulnezetes 2D (racsos), oldalnezetes 2D, vagy egyszeru 3D (low-poly)?
+2) Jatekhossz cel: 10-15 perc / 30 perc / 60 perc? Hany szoba legyen (MVP-re javaslat: 4-6)?
+3) Hibazas kezelese: azonnali halal+ujrakezdes szobankent, vagy "revive" (tars fel tud huzni)?
+4) Kommunikacio: csak in-game ping/ikonok, vagy feltetelezzuk, hogy a jatekosok beszelnek (Discord)?
+5) Matchmaking: privat szoba koddal (ajanlott), vagy nyilvanos kereses?
+6) Platform: desktop bongeszo (bill+eger), mobil, vagy mindketto?
+7) Puzzle-stilus: logikai (szimbolumok/mintak), fizikas (tolhato kockak), idozites, vagy mix?
+8) Szeretnel "lore"-t/sztorit (rovid bevezeto+veg), vagy csak jatekmenet?
+
+Jatek-vizio (MVP)
+Ket jatekos kooperativ "temple escape" jatek bongeszoben, egyszeru 2D grafikaval. A kijutashoz szobarol szobara haladnak; minden szobaban 1 fo kooperativ feladvany + 1 csapda mechanika. A jatekosok eltero kepessegei miatt mindkettorejuk szukseg van.
+
+Tervezesi pillerek
+- Kooperacio kenyszeritese: "egyedul nem megy", de egyutt egyszeru.
+- Rovid, tiszta szobak: 1 koncepcio / szoba.
+- Keves UI: ertheto interakciok (E gomb), jol olvashato jelzesek.
+
+Alap jatekmenet loop
+1) Belepnk egy szobaba -> ajto zar.
+2) Felfedezes -> jelek/nyomok -> feladvany.
+3) Kooperativ vegrehajtas (idozites / ket helyen allas / targy atadas).
+4) Ajto kinyilik -> tovabb a kovetkezo szobaba.
+5) Vegso kapu -> kijutas.
+
+Fail allapot (MVP javaslat)
+- Csapda sebzest ad; 3 talalat = "elesik".
+- A tars 5 mp-ig "felhuzhatja" (tartani kell az interakciot).
+- Ha mindketto elesik -> szoba elejere vissza (nem az egesz jatek).
+
+Ket karakter (kulonbozo szerepek)
+1) Orzo / Eros (Guardian)
+- Tud tolni/mozgatni nehez targyakat (kooszlop, nagy lada).
+- Tud "tartani" karokat/kapukat (amig nyomva tartja).
+- Passziv: kisebb csapdasebzes.
+
+2) Tudos / Furge (Scholar)
+- Tud olvasni rejtett feliratokat/UV-jeleket (lathatatlan tintaszeru jelek).
+- Tud aktivalni finom mechanizmusokat (kicsi kapcsolo, zar).
+- Passziv: gyorsabb mozgas / rovidebb interakcio-ido.
+
+Kooperacios minta
+- Guardian pozicional es "tart", Scholar dekodol es "kattint".
+
+Iranyitas es nezet (MVP ajanlas)
+- 2D felulnezet, tile-alapu palya.
+- Mozgas: WASD / nyilak, Interact: E, Ping: Space (mutat egy jelolot a palyan).
+- Egyszeru anim: 4 iranyu sprite vagy "capsule" figurak.
+
+Szobak/palyak (MVP: 5 szoba)
+Szoba 1: Elocsarnok - "Kettos nyomolap"
+- Ket nyomolapot egyszerre kell nyomni, de az egyik idozitett es elfordulo landzsacsapdak vedik.
+- Guardian a veszelyes oldalon kitart, Scholar atslisszol es aktival.
+
+Szoba 2: Feliratok terme - "Rejtett kod"
+- Falon szimbolumsor, csak Scholar latja (kepesseg).
+- Guardian kozben karokat huz (3 allas), Scholar mondja a helyes allast.
+- Hibanall nyilcsapda (kicsi buntetes, nem instant fail).
+
+Szoba 3: Oszlopcsarnok - "Nehez targy mozgatas + utvonal"
+- Guardian tol egy kooszlopot nyomolapra, ezzel leallit egy csapdat.
+- Scholar kozben kis kapcsolokkal nyit "rovid utat" a masiknak.
+- Kenyszer: kulon utvonalakon mozognak, de vizualisan latjak egymast.
+
+Szoba 4: Vizkamra - "Szelep es zsilip"
+- Scholar olvassa a csoveken a helyes sorrendet (rejtett jel).
+- Guardian tekeri a nehez szelepeket (lassu, "tartani kell").
+- Rossz sorrend: vizszint emelkedik, gyors dontes kell.
+
+Szoba 5: Fokapu - "Ketlepcsos finale"
+- 1. fazis: ket kar egyszerre (Guardian tartja, Scholar aktival).
+- 2. fazis: gyors kodbeutes (Scholar), mikozben Guardian elharitja a periodikus csapdat (pl. pajzs-zona: ha raall, leall 1 csapda).
+- Ajto nyilik -> kijutas anim + "ido/hibak" osszegzes.
+
+Jelzesek es UX (hogy ne legyen frusztralo)
+- Minden interaktiv elem kap egy egyszeru "outline"-t, ha kozel vagy.
+- Csapdak "telegrafaltak": 0.5-1 mp villanas, aztan aktival (tanulhato).
+- Ping rendszer: a jatekos jelolhet (ikon + rovid felirat: "ide!").
+
+Multiplayer technikai terv (magas szint, implementacio nelkul)
+Topologia (MVP ajanlas): dedikalt kis Node.js websockets szerver + bongeszos kliens.
+- Lobby: szobakod generalas/join.
+- Szerver tartja a "room state"-et (poziciok, kapcsolok, ajtok, csapdak allapota).
+- Kliens kuld inputot (mozgas/interact), szerver validal es broadcastol.
+- Tick: 10-20 Hz eleg (lassu jatek, puzzle fokusz).
+- Desync ellen: idonkenti state snapshot.
+
+Miert ez 1 napra jo?
+- Kevesebb edge case, mint P2P/WebRTC, es konnyebb debug.
+
+Tartalom es asset igeny (minimal)
+- 1 tileset (padlo/fal/ajto), 2 karakter sprite (vagy shape), 6-8 interaktiv prop (kar, nyomolap, szelep, kooszlop, tuske/nyilcsapda, kapu).
+- 6-10 hang (kapu, csapda, lever, success/fail) opcionalis.
+
+1 napos munkaterv (ha holnapra "jatszhato" kell)
+- 0-1 ora: vegleges scope (szobaszam, nezet, fail mod, lobby).
+- 1-3 ora: alap mozgas + interakcio + egyszeru palyabetoltes.
+- 3-5 ora: multiplayer szinkron (lobby, csatlakozas, poziciok, interact).
+- 5-7 ora: 2 szoba end-to-end (bejarhato, ajto nyilik).
+- 7-9 ora: tovabbi 2-3 szoba + finale.
+- 9-10 ora: balansz, hibakezeles, polish (telegraph, ping, UI).
+
+Kiegeszito otletek (ha marad ido)
+- "Szerepcseres" minipuzzle: rovid szakasz, ahol a Scholar a Guardian-t "iranyitja" (jelolesekkel), mert sotet van (csak egyik lat).
+- "Csend csapda": ha hangot csinalnak (szelep/kar), egy orszellem aktivalodik -> tempovaltas.
+- Gyors "replay" ertek: idomeres + "hibaszam" rang.
