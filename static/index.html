@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Living Temple (MVP)</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="lobby" class="panel">
+        <h1>The Living Temple (MVP)</h1>
+        <p class="muted">
+          2-player co-op. Movement: WASD/Arrows • Interact: E • Ping: Space • Presets: 1-4 then Space.
+        </p>
+        <div class="row">
+          <button id="createBtn">Create private room</button>
+          <div class="spacer"></div>
+          <input id="codeInput" placeholder="ROOM CODE" maxlength="5" />
+          <button id="joinBtn">Join</button>
+        </div>
+        <div id="lobbyStatus" class="muted"></div>
+      </div>
+
+      <div id="game" class="hidden">
+        <div class="hud">
+          <div class="hud-left">
+            <div><span class="label">Room</span> <span id="roomName"></span> <span id="roomCode" class="pill"></span></div>
+            <div><span class="label">You</span> <span id="youRole"></span> <span id="youHp"></span></div>
+            <div id="fragments"></div>
+          </div>
+          <div class="hud-right">
+            <div class="muted">Goal: solve rooms → collect fragments → final gate code.</div>
+          </div>
+        </div>
+
+        <div class="canvas-wrap">
+          <canvas id="canvas" width="960" height="672"></canvas>
+          <div id="keypad" class="panel keypad hidden">
+            <div class="row">
+              <div>
+                <div class="label">Keypad (Scholar)</div>
+                <div class="muted">Enter final code once the levers are held.</div>
+              </div>
+            </div>
+            <div class="row">
+              <input id="keypadInput" placeholder="FINAL CODE" />
+              <button id="keypadSubmit">Submit</button>
+            </div>
+            <div id="keypadStatus" class="muted"></div>
+          </div>
+        </div>
+
+        <div id="log" class="log"></div>
+      </div>
+    </div>
+    <script src="/static/game.js"></script>
+  </body>
+</html>
+
