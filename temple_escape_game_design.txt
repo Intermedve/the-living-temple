@@ -1,5 +1,16 @@
 A templombol valo kiszabadulas - 2 fos kooperativ browser jatek (TERV / MVP)
 
+Veglegesitett parameterek (a valaszaid alapjan)
+- Nezet: 2D felulnezet (tile-alapu).
+- Tartalom: 5 szoba, max 10 perc jatekido.
+- Hibazas: revive (tars fel tud huzni).
+- Kommunikacio: csak in-game (ping + rovid preset uzenetek).
+- Matchmaking: privat szoba koddal.
+- Platform: desktop bongeszo.
+- Puzzle-stilus: mix (logika + idozites + egyszeru "fizikas" tologatas).
+- Lore: egyelore csak jatekmenet.
+- Plusz: minden megoldott szoba 1 kodtoredeket ad; a kijutas a kod osszeillesztesevel tortenik.
+
 Gyors tisztazo kerdesek (hogy 1 nap alatt realis legyen a scope)
 1) Nezet: felulnezetes 2D (racsos), oldalnezetes 2D, vagy egyszeru 3D (low-poly)?
 2) Jatekhossz cel: 10-15 perc / 30 perc / 60 perc? Hany szoba legyen (MVP-re javaslat: 4-6)?
@@ -30,6 +41,11 @@ Fail allapot (MVP javaslat)
 - A tars 5 mp-ig "felhuzhatja" (tartani kell az interakciot).
 - Ha mindketto elesik -> szoba elejere vissza (nem az egesz jatek).
 
+Revive reszletek (MVP pontositas)
+- Revive csak kozelrol es folyamatos interakcioval mukodik (pl. 3-5 mp).
+- Revive kozben a felhuzo jatekos nem tud mozogni (kockazat).
+- Opcionális egyszerusites 1 napra: szobankent korlatlan revive, de a csapdak gyorsan "lefaragjak" az idot.
+
 Ket karakter (kulonbozo szerepek)
 1) Orzo / Eros (Guardian)
 - Tud tolni/mozgatni nehez targyakat (kooszlop, nagy lada).
@@ -49,35 +65,56 @@ Iranyitas es nezet (MVP ajanlas)
 - Mozgas: WASD / nyilak, Interact: E, Ping: Space (mutat egy jelolot a palyan).
 - Egyszeru anim: 4 iranyu sprite vagy "capsule" figurak.
 
+In-game kommunikacio (csak jatekon belul)
+- Ping: Space -> lerak egy jelolot (pl. "IDE") a palyan, ami mindket jatekosnak latszik.
+- Gyors uzenetek: Space nyomva -> radial menu 4-6 preset uzenettel (pl. "Allj a lapra", "Huzd a kart", "Varj!", "Kesz!").
+- Kontextus ikonok: interaktiv elemek felett minimal ikon (kar, lap, szelep), hogy pingelve is ertheto legyen.
+
+Kodtoredek mechanika (uj funkcio)
+- Minden szoba teljesitese utan kapnak 1 "kodtoredeket" (pl. 2-4 karakter / szoba).
+- A kod UI-ban gyujlik (5 slot), a slotok sorrendje eleinte ismeretlen.
+- A szobaban talalhato jelek adnak utmutatast a helyes sorrendre (pl. szimbolumok: nap-hold-csillag; vagy 1-5 romai szamok rejtve).
+- Az utolso kapu egy "kodpanel": a ket jatekosnak egyutt kell osszeraknia (pl. egyik valaszt slotot, masik forgat/allit, vagy ket oldalon kell egyszerre megerositeni).
+
 Szobak/palyak (MVP: 5 szoba)
 Szoba 1: Elocsarnok - "Kettos nyomolap"
 - Ket nyomolapot egyszerre kell nyomni, de az egyik idozitett es elfordulo landzsacsapdak vedik.
 - Guardian a veszelyes oldalon kitart, Scholar atslisszol es aktival.
+- Jutalom: 1 kodtoredek + 1 vizualis jel a kod sorrendjebol (pl. "I").
 
 Szoba 2: Feliratok terme - "Rejtett kod"
 - Falon szimbolumsor, csak Scholar latja (kepesseg).
 - Guardian kozben karokat huz (3 allas), Scholar mondja a helyes allast.
 - Hibanall nyilcsapda (kicsi buntetes, nem instant fail).
+- Jutalom: 1 kodtoredek + jel a sorrendhez (pl. "III").
 
 Szoba 3: Oszlopcsarnok - "Nehez targy mozgatas + utvonal"
 - Guardian tol egy kooszlopot nyomolapra, ezzel leallit egy csapdat.
 - Scholar kozben kis kapcsolokkal nyit "rovid utat" a masiknak.
 - Kenyszer: kulon utvonalakon mozognak, de vizualisan latjak egymast.
+- Jutalom: 1 kodtoredek + jel a sorrendhez (pl. "II").
 
 Szoba 4: Vizkamra - "Szelep es zsilip"
 - Scholar olvassa a csoveken a helyes sorrendet (rejtett jel).
 - Guardian tekeri a nehez szelepeket (lassu, "tartani kell").
 - Rossz sorrend: vizszint emelkedik, gyors dontes kell.
+- Jutalom: 1 kodtoredek + jel a sorrendhez (pl. "V").
 
 Szoba 5: Fokapu - "Ketlepcsos finale"
 - 1. fazis: ket kar egyszerre (Guardian tartja, Scholar aktival).
 - 2. fazis: gyors kodbeutes (Scholar), mikozben Guardian elharitja a periodikus csapdat (pl. pajzs-zona: ha raall, leall 1 csapda).
 - Ajto nyilik -> kijutas anim + "ido/hibak" osszegzes.
+- Finale csavar: az osszegyujtott 5 kodtoredeket helyes sorrendben kell osszerakni a kapu kodpanelen.
 
 Jelzesek es UX (hogy ne legyen frusztralo)
 - Minden interaktiv elem kap egy egyszeru "outline"-t, ha kozel vagy.
 - Csapdak "telegrafaltak": 0.5-1 mp villanas, aztan aktival (tanulhato).
 - Ping rendszer: a jatekos jelolhet (ikon + rovid felirat: "ide!").
+
+Idokeret-kezeles (max 10 perc)
+- Szobankent 1 fo feladvany + 1 csapda, minimal "set dressing".
+- Nincs hosszu backtracking: ha megvan a megoldas, az ajto azonnal nyilik.
+- Tippek finoman: ha 60-90 mp utan nincs progress, egy halvany highlight jelzi a kovetkezo relevans elemet.
 
 Multiplayer technikai terv (magas szint, implementacio nelkul)
 Topologia (MVP ajanlas): dedikalt kis Node.js websockets szerver + bongeszos kliens.
